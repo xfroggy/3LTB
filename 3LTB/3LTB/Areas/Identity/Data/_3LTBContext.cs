@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _3LTB.Data
 {
-    public class _3LTBContext : IdentityDbContext<_3LTBIdentityUser>
+    public class _3LTBContext : IdentityDbContext<ApplicationUser>
     {
         public _3LTBContext(DbContextOptions<_3LTBContext> options)
             : base(options)
