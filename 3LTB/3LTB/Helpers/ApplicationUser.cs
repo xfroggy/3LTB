@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _3LTB.Helpers
 {
-    public class _3LTBIdentityUser : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [ProtectedPersonalData]
         public virtual string SeniorityNumber { get; set; }

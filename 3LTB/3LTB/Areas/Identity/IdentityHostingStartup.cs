@@ -1,5 +1,6 @@
 ﻿using System;
 using _3LTB.Data;
+using _3LTB.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -19,7 +20,7 @@ namespace _3LTB.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("_3LTBContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<_3LTBContext>();
             });
         }
