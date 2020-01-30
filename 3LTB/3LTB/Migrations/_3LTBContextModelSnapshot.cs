@@ -154,7 +154,7 @@ namespace _3LTB.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("_3LTB.Helpers._3LTBIdentityUser", b =>
+            modelBuilder.Entity("_3LTB.Helpers.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -234,6 +234,60 @@ namespace _3LTB.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("_3LTB.Models.Base", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BaseName")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Base");
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Sequence", b =>
+                {
+                    b.Property<int>("SeqNum")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BaseID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DaysOp")
+                        .HasColumnType("int");
+
+                    b.Property<float>("GTTL")
+                        .HasColumnType("real");
+
+                    b.Property<float>("RIG")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TTL")
+                        .HasColumnType("real");
+
+                    b.HasKey("SeqNum");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("BaseID");
+
+                    b.ToTable("Sequence");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -245,7 +299,7 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("_3LTB.Helpers._3LTBIdentityUser", null)
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -254,7 +308,7 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("_3LTB.Helpers._3LTBIdentityUser", null)
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -269,7 +323,7 @@ namespace _3LTB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_3LTB.Helpers._3LTBIdentityUser", null)
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -278,9 +332,29 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("_3LTB.Helpers._3LTBIdentityUser", null)
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Base", b =>
+                {
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
+                        .WithMany("Bases")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Sequence", b =>
+                {
+                    b.HasOne("_3LTB.Helpers.ApplicationUser", null)
+                        .WithMany("Sequences")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("_3LTB.Models.Base", "Base")
+                        .WithMany("Sequences")
+                        .HasForeignKey("BaseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -157,6 +157,56 @@ namespace _3LTB.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Base",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BaseName = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Base", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Base_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sequence",
+                columns: table => new
+                {
+                    SeqNum = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BaseID = table.Column<int>(nullable: false),
+                    TTL = table.Column<float>(nullable: false),
+                    RIG = table.Column<float>(nullable: false),
+                    GTTL = table.Column<float>(nullable: false),
+                    DaysOp = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sequence", x => x.SeqNum);
+                    table.ForeignKey(
+                        name: "FK_Sequence_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sequence_Base_BaseID",
+                        column: x => x.BaseID,
+                        principalTable: "Base",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -195,6 +245,21 @@ namespace _3LTB.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Base_ApplicationUserId",
+                table: "Base",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sequence_ApplicationUserId",
+                table: "Sequence",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sequence_BaseID",
+                table: "Sequence",
+                column: "BaseID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -215,7 +280,13 @@ namespace _3LTB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Sequence");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Base");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _3LTB.Helpers;
+using _3LTB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace _3LTB.Data
 {
     public class _3LTBContext : IdentityDbContext<ApplicationUser>
     {
+
         public _3LTBContext(DbContextOptions<_3LTBContext> options)
             : base(options)
         {
