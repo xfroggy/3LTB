@@ -12,11 +12,14 @@ namespace _3LTB.Data
 {
     public class _3LTBContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<Sequence> Sequences { get; set; }
+        public virtual DbSet<Base> Bases { get; set; }
 
         public _3LTBContext(DbContextOptions<_3LTBContext> options)
             : base(options)
         {
         }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

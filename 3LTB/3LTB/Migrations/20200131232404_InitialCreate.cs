@@ -52,6 +52,19 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bases",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BaseName = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bases", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -158,27 +171,7 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Base",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BaseName = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Base", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Base_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Sequence",
+                name: "Sequences",
                 columns: table => new
                 {
                     SeqNum = table.Column<int>(nullable: false)
@@ -187,22 +180,15 @@ namespace _3LTB.Migrations
                     TTL = table.Column<float>(nullable: false),
                     RIG = table.Column<float>(nullable: false),
                     GTTL = table.Column<float>(nullable: false),
-                    DaysOp = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    DaysOp = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sequence", x => x.SeqNum);
+                    table.PrimaryKey("PK_Sequences", x => x.SeqNum);
                     table.ForeignKey(
-                        name: "FK_Sequence_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Sequence_Base_BaseID",
+                        name: "FK_Sequences_Bases_BaseID",
                         column: x => x.BaseID,
-                        principalTable: "Base",
+                        principalTable: "Bases",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -247,18 +233,8 @@ namespace _3LTB.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Base_ApplicationUserId",
-                table: "Base",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sequence_ApplicationUserId",
-                table: "Sequence",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sequence_BaseID",
-                table: "Sequence",
+                name: "IX_Sequences_BaseID",
+                table: "Sequences",
                 column: "BaseID");
         }
 
@@ -280,16 +256,16 @@ namespace _3LTB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Sequence");
+                name: "Sequences");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Base");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Bases");
         }
     }
 }

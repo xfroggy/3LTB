@@ -17,8 +17,8 @@ namespace _3LTB.Helpers
         public virtual string EmployeeID { get; set; }
         public virtual string Base { get; set; }
 
-        public DbSet<Base> Bases { get; set; }
-        public DbSet<Sequence> Sequences { get; set; }
+        //public DbSet<Base> Bases { get; set; }
+        //public DbSet<Sequence> Sequences { get; set; }
 
 
     }
