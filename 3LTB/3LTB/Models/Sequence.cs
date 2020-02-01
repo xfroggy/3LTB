@@ -17,6 +17,9 @@ namespace _3LTB.Models
         public float RIG { get; set; }
         public float GTTL { get; set; }
         public int DaysOp { get; set; }
-    
+
+        public IList<DutyPeriod> DutyPeriods { get; set; }
+        public IList<SequenceOpDate> SequenceOpDates { get; set; }
+
     }
 }

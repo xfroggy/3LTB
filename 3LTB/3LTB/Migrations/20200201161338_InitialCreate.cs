@@ -65,6 +65,19 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OpDate",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateOp = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpDate", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -220,6 +233,30 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SequenceOpDate",
+                columns: table => new
+                {
+                    SequenceSeqNum = table.Column<int>(nullable: false),
+                    OpDateID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceSeqNum, x.OpDateID });
+                    table.ForeignKey(
+                        name: "FK_SequenceOpDate_OpDate_OpDateID",
+                        column: x => x.OpDateID,
+                        principalTable: "OpDate",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SequenceOpDate_Sequences_SequenceSeqNum",
+                        column: x => x.SequenceSeqNum,
+                        principalTable: "Sequences",
+                        principalColumn: "SeqNum",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Legs",
                 columns: table => new
                 {
@@ -300,6 +337,11 @@ namespace _3LTB.Migrations
                 column: "DutyPeriodID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SequenceOpDate_OpDateID",
+                table: "SequenceOpDate",
+                column: "OpDateID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sequences_BaseID",
                 table: "Sequences",
                 column: "BaseID");
@@ -326,6 +368,9 @@ namespace _3LTB.Migrations
                 name: "Legs");
 
             migrationBuilder.DropTable(
+                name: "SequenceOpDate");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -333,6 +378,9 @@ namespace _3LTB.Migrations
 
             migrationBuilder.DropTable(
                 name: "DutyPeriods");
+
+            migrationBuilder.DropTable(
+                name: "OpDate");
 
             migrationBuilder.DropTable(
                 name: "Sequences");
