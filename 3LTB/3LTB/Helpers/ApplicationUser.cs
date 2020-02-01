@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using _3LTB.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,10 @@ namespace _3LTB.Helpers
         public virtual string LastName { get; set; }
         public virtual string EmployeeID { get; set; }
         public virtual string Base { get; set; }
+
+        //public DbSet<Base> Bases { get; set; }
+        //public DbSet<Sequence> Sequences { get; set; }
+
 
     }
 }
