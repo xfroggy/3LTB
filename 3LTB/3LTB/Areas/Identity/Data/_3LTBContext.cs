@@ -15,6 +15,9 @@ namespace _3LTB.Data
         public virtual DbSet<Sequence> Sequences { get; set; }
         public virtual DbSet<Base> Bases { get; set; }
 
+        public virtual DbSet<DutyPeriod> DutyPeriods { get; set; }
+        public virtual DbSet<Leg> Legs { get; set; }
+
         public _3LTBContext(DbContextOptions<_3LTBContext> options)
             : base(options)
         {

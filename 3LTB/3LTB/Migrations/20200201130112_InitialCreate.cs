@@ -193,6 +193,63 @@ namespace _3LTB.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DutyPeriods",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SequenceSeqNum = table.Column<int>(nullable: false),
+                    DPnum = table.Column<int>(nullable: false),
+                    RPTdayNum = table.Column<string>(nullable: true),
+                    RPTdepLCL = table.Column<string>(nullable: true),
+                    RPTdepHBT = table.Column<string>(nullable: true),
+                    RLSarrLCL = table.Column<string>(nullable: true),
+                    RLSarrHBT = table.Column<string>(nullable: true),
+                    DPblock = table.Column<float>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DutyPeriods", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_DutyPeriods_Sequences_SequenceSeqNum",
+                        column: x => x.SequenceSeqNum,
+                        principalTable: "Sequences",
+                        principalColumn: "SeqNum",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Legs",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DutyPeriodID = table.Column<int>(nullable: false),
+                    DPnum = table.Column<int>(nullable: false),
+                    DayNumStart = table.Column<int>(nullable: false),
+                    DayNumEnd = table.Column<int>(nullable: false),
+                    EQP = table.Column<string>(nullable: true),
+                    FLTnum = table.Column<int>(nullable: false),
+                    DEPcity = table.Column<string>(nullable: true),
+                    DEPlcl = table.Column<string>(nullable: true),
+                    DEPhbt = table.Column<string>(nullable: true),
+                    ARRcity = table.Column<string>(nullable: true),
+                    ARRlcl = table.Column<string>(nullable: true),
+                    ARRhbt = table.Column<string>(nullable: true),
+                    LEGblock = table.Column<float>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Legs", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Legs_DutyPeriods_DutyPeriodID",
+                        column: x => x.DutyPeriodID,
+                        principalTable: "DutyPeriods",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -233,6 +290,16 @@ namespace _3LTB.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DutyPeriods_SequenceSeqNum",
+                table: "DutyPeriods",
+                column: "SequenceSeqNum");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Legs_DutyPeriodID",
+                table: "Legs",
+                column: "DutyPeriodID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sequences_BaseID",
                 table: "Sequences",
                 column: "BaseID");
@@ -256,13 +323,19 @@ namespace _3LTB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Sequences");
+                name: "Legs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "DutyPeriods");
+
+            migrationBuilder.DropTable(
+                name: "Sequences");
 
             migrationBuilder.DropTable(
                 name: "Bases");

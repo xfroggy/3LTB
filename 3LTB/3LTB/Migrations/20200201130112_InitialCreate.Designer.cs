@@ -10,7 +10,7 @@ using _3LTB.Data;
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    [Migration("20200131232404_InitialCreate")]
+    [Migration("20200201130112_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,6 +251,97 @@ namespace _3LTB.Migrations
                     b.ToTable("Bases");
                 });
 
+            modelBuilder.Entity("_3LTB.Models.DutyPeriod", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<float>("DPblock")
+                        .HasColumnType("real");
+
+                    b.Property<int>("DPnum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RLSarrHBT")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RLSarrLCL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RPTdayNum")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RPTdepHBT")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RPTdepLCL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SequenceSeqNum")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SequenceSeqNum");
+
+                    b.ToTable("DutyPeriods");
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Leg", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ARRcity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ARRhbt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ARRlcl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DEPcity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DEPhbt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DEPlcl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DPnum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DayNumEnd")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DayNumStart")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DutyPeriodID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EQP")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FLTnum")
+                        .HasColumnType("int");
+
+                    b.Property<float>("LEGblock")
+                        .HasColumnType("real");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DutyPeriodID");
+
+                    b.ToTable("Legs");
+                });
+
             modelBuilder.Entity("_3LTB.Models.Sequence", b =>
                 {
                     b.Property<int>("SeqNum")
@@ -327,6 +418,24 @@ namespace _3LTB.Migrations
                     b.HasOne("_3LTB.Helpers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("_3LTB.Models.DutyPeriod", b =>
+                {
+                    b.HasOne("_3LTB.Models.Sequence", "Sequence")
+                        .WithMany()
+                        .HasForeignKey("SequenceSeqNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Leg", b =>
+                {
+                    b.HasOne("_3LTB.Models.DutyPeriod", "DutyPeriod")
+                        .WithMany()
+                        .HasForeignKey("DutyPeriodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
