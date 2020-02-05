@@ -340,6 +340,21 @@ namespace _3LTB.Migrations
                     b.ToTable("Legs");
                 });
 
+            modelBuilder.Entity("_3LTB.Models.OpDate", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DateOp")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("OpDate");
+                });
+
             modelBuilder.Entity("_3LTB.Models.Sequence", b =>
                 {
                     b.Property<int>("SeqNum")
@@ -367,6 +382,21 @@ namespace _3LTB.Migrations
                     b.HasIndex("BaseID");
 
                     b.ToTable("Sequences");
+                });
+
+            modelBuilder.Entity("_3LTB.Models.SequenceOpDate", b =>
+                {
+                    b.Property<int>("SequenceSeqNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OpDateID")
+                        .HasColumnType("int");
+
+                    b.HasKey("SequenceSeqNum", "OpDateID");
+
+                    b.HasIndex("OpDateID");
+
+                    b.ToTable("SequenceOpDate");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -423,7 +453,7 @@ namespace _3LTB.Migrations
             modelBuilder.Entity("_3LTB.Models.DutyPeriod", b =>
                 {
                     b.HasOne("_3LTB.Models.Sequence", "Sequence")
-                        .WithMany()
+                        .WithMany("DutyPeriods")
                         .HasForeignKey("SequenceSeqNum")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -432,7 +462,7 @@ namespace _3LTB.Migrations
             modelBuilder.Entity("_3LTB.Models.Leg", b =>
                 {
                     b.HasOne("_3LTB.Models.DutyPeriod", "DutyPeriod")
-                        .WithMany()
+                        .WithMany("Legs")
                         .HasForeignKey("DutyPeriodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -443,6 +473,21 @@ namespace _3LTB.Migrations
                     b.HasOne("_3LTB.Models.Base", "Base")
                         .WithMany("Sequences")
                         .HasForeignKey("BaseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("_3LTB.Models.SequenceOpDate", b =>
+                {
+                    b.HasOne("_3LTB.Models.OpDate", "OpDate")
+                        .WithMany("SequenceOpDates")
+                        .HasForeignKey("OpDateID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_3LTB.Models.Sequence", "Sequence")
+                        .WithMany("SequenceOpDates")
+                        .HasForeignKey("SequenceSeqNum")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

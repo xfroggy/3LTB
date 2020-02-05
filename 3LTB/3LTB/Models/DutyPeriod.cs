@@ -17,6 +17,7 @@ namespace _3LTB.Models
         public string RLSarrLCL { get; set; }
         public string RLSarrHBT { get; set; }
         public float DPblock { get; set; }
+        public IList<Leg> Legs { get; set; }
 
     }
 }
