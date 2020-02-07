@@ -86,7 +86,7 @@ namespace _3LTB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=TradeBoard}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
