@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _3LTB.Data;
 
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    partial class _3LTBContextModelSnapshot : ModelSnapshot
+    [Migration("20200208163452_AddPostTable2")]
+    partial class AddPostTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

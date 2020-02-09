@@ -11,7 +11,7 @@
                 <p><a href="#" class="btn btn-primary btn-block" role="button">My Transactions</a></p>
             </div>
             <div class="col-sm-2">
-                <p><a href="#" class="btn btn-primary btn-block" role="button">Create Post</a></p>
+                <p><a asp-action="CreatePost" asp-controller="TradeBoard" class="btn btn-primary btn-block" role="button">Create Post</a></p>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                     <label for="sel1">Add Criteria</label>
                     <select class="form-control" id="sel1" name="AddCriteria">
                         <option value="Date">Date</option>
-                        <option value="RON">RON</option>
+                        <option value="RON" selected>RON</option>
                         <option value="Position">Position</option>
                         <option value="Purser">Purser</option>
                     </select>
@@ -85,5 +85,31 @@
                 <p><a href="#" class="btn" role="button">Lang</a></p>
             </div>
         </div>
+
+        @foreach (var post in Model)
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <p>@post.Trade</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>@post.Title</p>
+                </div>
+                <div class="col-sm-2">
+                    @*<p>@post.FlightDate</p>*@
+                    @*Had to use Html helper so that FlightDate displays according to format in Post.cs*@
+                    @Html.DisplayFor(modelPost => post.FlightDate)
+                </div>
+                <div class="col-sm-1">
+                    <p>@post.Position</p>
+                </div>
+                <div class="col-sm-2">
+                    <p>@post.Report</p>
+                </div>
+                <div class="col-sm-1">
+                    <p>@post.Lang</p>
+                </div>
+            </div>
+        }
 
     </div>
