@@ -241,12 +241,79 @@ namespace _3LTB.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BaseName")
-                        .HasColumnType("int");
+                    b.Property<string>("BaseName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Bases");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            BaseName = "BOS"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            BaseName = "CLT"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            BaseName = "DCA"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            BaseName = "DFW"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            BaseName = "LAX"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            BaseName = "LGA"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            BaseName = "MIA"
+                        },
+                        new
+                        {
+                            ID = 8,
+                            BaseName = "ORD"
+                        },
+                        new
+                        {
+                            ID = 9,
+                            BaseName = "PHL"
+                        },
+                        new
+                        {
+                            ID = 10,
+                            BaseName = "PHX"
+                        },
+                        new
+                        {
+                            ID = 11,
+                            BaseName = "RDU"
+                        },
+                        new
+                        {
+                            ID = 12,
+                            BaseName = "SFO"
+                        },
+                        new
+                        {
+                            ID = 13,
+                            BaseName = "SLT"
+                        });
                 });
 
             modelBuilder.Entity("_3LTB.Models.DutyPeriod", b =>
@@ -352,7 +419,174 @@ namespace _3LTB.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("OpDate");
+                    b.ToTable("OpDates");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            DateOp = 31
+                        },
+                        new
+                        {
+                            ID = 2,
+                            DateOp = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            DateOp = 2
+                        },
+                        new
+                        {
+                            ID = 4,
+                            DateOp = 3
+                        },
+                        new
+                        {
+                            ID = 5,
+                            DateOp = 4
+                        },
+                        new
+                        {
+                            ID = 6,
+                            DateOp = 5
+                        },
+                        new
+                        {
+                            ID = 7,
+                            DateOp = 6
+                        },
+                        new
+                        {
+                            ID = 8,
+                            DateOp = 7
+                        },
+                        new
+                        {
+                            ID = 9,
+                            DateOp = 8
+                        },
+                        new
+                        {
+                            ID = 10,
+                            DateOp = 9
+                        },
+                        new
+                        {
+                            ID = 11,
+                            DateOp = 10
+                        },
+                        new
+                        {
+                            ID = 12,
+                            DateOp = 11
+                        },
+                        new
+                        {
+                            ID = 13,
+                            DateOp = 12
+                        },
+                        new
+                        {
+                            ID = 14,
+                            DateOp = 13
+                        },
+                        new
+                        {
+                            ID = 15,
+                            DateOp = 16
+                        },
+                        new
+                        {
+                            ID = 16,
+                            DateOp = 15
+                        },
+                        new
+                        {
+                            ID = 17,
+                            DateOp = 16
+                        },
+                        new
+                        {
+                            ID = 18,
+                            DateOp = 17
+                        },
+                        new
+                        {
+                            ID = 19,
+                            DateOp = 18
+                        },
+                        new
+                        {
+                            ID = 20,
+                            DateOp = 19
+                        },
+                        new
+                        {
+                            ID = 21,
+                            DateOp = 20
+                        },
+                        new
+                        {
+                            ID = 22,
+                            DateOp = 21
+                        },
+                        new
+                        {
+                            ID = 23,
+                            DateOp = 22
+                        },
+                        new
+                        {
+                            ID = 24,
+                            DateOp = 23
+                        },
+                        new
+                        {
+                            ID = 25,
+                            DateOp = 24
+                        },
+                        new
+                        {
+                            ID = 26,
+                            DateOp = 25
+                        },
+                        new
+                        {
+                            ID = 27,
+                            DateOp = 26
+                        },
+                        new
+                        {
+                            ID = 28,
+                            DateOp = 29
+                        },
+                        new
+                        {
+                            ID = 29,
+                            DateOp = 28
+                        },
+                        new
+                        {
+                            ID = 30,
+                            DateOp = 29
+                        },
+                        new
+                        {
+                            ID = 31,
+                            DateOp = 30
+                        },
+                        new
+                        {
+                            ID = 32,
+                            DateOp = 31
+                        },
+                        new
+                        {
+                            ID = 33,
+                            DateOp = 1
+                        });
                 });
 
             modelBuilder.Entity("_3LTB.Models.Sequence", b =>

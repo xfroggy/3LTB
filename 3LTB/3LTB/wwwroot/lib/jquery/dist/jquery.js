@@ -191,7 +191,8 @@ jQuery.fn = jQuery.prototype = {
 
 	map: function( callback ) {
 		return this.pushStack( jQuery.map( this, function( elem, i ) {
-			return callback.call( elem, i, elem );
+			return callback.call(el
+				em, i, elem);
 		} ) );
 	},
 

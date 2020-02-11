@@ -57,7 +57,7 @@ namespace _3LTB.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BaseName = table.Column<int>(nullable: false)
+                    BaseName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,7 +65,7 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OpDate",
+                name: "OpDates",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -74,7 +74,7 @@ namespace _3LTB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OpDate", x => x.ID);
+                    table.PrimaryKey("PK_OpDates", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,9 +243,9 @@ namespace _3LTB.Migrations
                 {
                     table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceSeqNum, x.OpDateID });
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_OpDate_OpDateID",
+                        name: "FK_SequenceOpDate_OpDates_OpDateID",
                         column: x => x.OpDateID,
-                        principalTable: "OpDate",
+                        principalTable: "OpDates",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -285,6 +285,66 @@ namespace _3LTB.Migrations
                         principalTable: "DutyPeriods",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Bases",
+                columns: new[] { "ID", "BaseName" },
+                values: new object[,]
+                {
+                    { 1, "BOS" },
+                    { 13, "SLT" },
+                    { 12, "SFO" },
+                    { 11, "RDU" },
+                    { 9, "PHL" },
+                    { 8, "ORD" },
+                    { 10, "PHX" },
+                    { 6, "LGA" },
+                    { 5, "LAX" },
+                    { 4, "DFW" },
+                    { 3, "DCA" },
+                    { 2, "CLT" },
+                    { 7, "MIA" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OpDates",
+                columns: new[] { "ID", "DateOp" },
+                values: new object[,]
+                {
+                    { 23, 22 },
+                    { 19, 18 },
+                    { 20, 19 },
+                    { 21, 20 },
+                    { 22, 21 },
+                    { 24, 23 },
+                    { 31, 30 },
+                    { 26, 25 },
+                    { 27, 26 },
+                    { 28, 29 },
+                    { 29, 28 },
+                    { 30, 29 },
+                    { 18, 17 },
+                    { 25, 24 },
+                    { 17, 16 },
+                    { 10, 9 },
+                    { 15, 16 },
+                    { 1, 31 },
+                    { 2, 1 },
+                    { 3, 2 },
+                    { 4, 3 },
+                    { 5, 4 },
+                    { 6, 5 },
+                    { 16, 15 },
+                    { 7, 6 },
+                    { 9, 8 },
+                    { 32, 31 },
+                    { 11, 10 },
+                    { 12, 11 },
+                    { 13, 12 },
+                    { 14, 13 },
+                    { 8, 7 },
+                    { 33, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -380,7 +440,7 @@ namespace _3LTB.Migrations
                 name: "DutyPeriods");
 
             migrationBuilder.DropTable(
-                name: "OpDate");
+                name: "OpDates");
 
             migrationBuilder.DropTable(
                 name: "Sequences");

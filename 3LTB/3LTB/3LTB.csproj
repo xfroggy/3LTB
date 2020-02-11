@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -38,9 +38,27 @@
     <Compile Remove="Migrations\20200201124726_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200201130112_InitialCreate.cs" />
     <Compile Remove="Migrations\20200201130112_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200201161338_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200201161338_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200208230103_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208230103_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200208231055_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208231055_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200208232718_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208232718_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200209010430_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200209010430_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200209010748_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200209010748_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="SeedData\BulkData.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="14.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
@@ -50,7 +68,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
 
