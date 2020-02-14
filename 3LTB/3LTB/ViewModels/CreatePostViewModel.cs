@@ -8,8 +8,8 @@ namespace _3LTB.ViewModels
 {
     public class CreatePostViewModel
     {
-        public string UserID { get; set; } // Links IdentityUser with Post entry. Filled in with id of logged-in user.
-        [Display(Name = "Departure City")]
+        //public string UserID { get; set; } // Links IdentityUser with Post entry. Filled in with id of logged-in user.
+        //[Display(Name = "Departure City")]
         public string DepartureCity { get; set; }
         public string Trade { get; set; }
         [Required]
@@ -20,7 +20,7 @@ namespace _3LTB.ViewModels
         [DataType(DataType.Date)]
         public DateTime FlightDate { get; set; }
         public int Position { get; set; }
-        [Required]
+        //[Required]
         public string Report { get; set; }
         [Required]
         public bool Lang { get; set; }
