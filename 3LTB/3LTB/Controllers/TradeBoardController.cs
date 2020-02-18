@@ -42,7 +42,7 @@ namespace _3LTB.Controllers
             //TODO: These fields are populated automatically. Simulate for now.
             createPostViewModel.DepartureCity = "Miami";
             createPostViewModel.ArrivalCity = "New York";
-            createPostViewModel.Report = "Some info";
+            //createPostViewModel.Report = "Some info";
 
             ViewBag.Title = "Create Post";
 
@@ -54,8 +54,9 @@ namespace _3LTB.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Retrieve id of logged in user
+                //Retrieve id of logged in user and use to retrieve employee id
                 string userid = _userManager.GetUserId(User);
+                string empId = context.Users.Where(x => x.Id == userid).Select(x => x.EmployeeID).Single();
 
                 Post newPost = new Post
                 {
@@ -64,12 +65,12 @@ namespace _3LTB.Controllers
                     Flight = createPostViewModel.Flight,
                     FlightDate = createPostViewModel.FlightDate,
                     Position = createPostViewModel.Position,
-                    Report = createPostViewModel.Report,
+                    Report = "Some info",
                     Lang = createPostViewModel.Lang,
                     RedFlag = createPostViewModel.RedFlag,
                     DepartureCity = createPostViewModel.DepartureCity,
                     ArrivalCity = createPostViewModel.ArrivalCity,
-                    UserID = userid,
+                    UserID = empId,
                 };
 
                 context.Posts.Add(newPost);
