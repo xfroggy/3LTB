@@ -10,7 +10,7 @@ using _3LTB.Data;
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    [Migration("20200209020119_InitialCreate")]
+    [Migration("20200220120416_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -346,12 +346,12 @@ namespace _3LTB.Migrations
                     b.Property<string>("RPTdepLCL")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SequenceSeqNum")
+                    b.Property<int>("SequenceID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("SequenceSeqNum");
+                    b.HasIndex("SequenceID");
 
                     b.ToTable("DutyPeriods");
                 });
@@ -593,7 +593,7 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("_3LTB.Models.Sequence", b =>
                 {
-                    b.Property<int>("SeqNum")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -610,10 +610,13 @@ namespace _3LTB.Migrations
                     b.Property<float>("RIG")
                         .HasColumnType("real");
 
+                    b.Property<int>("SeqNum")
+                        .HasColumnType("int");
+
                     b.Property<float>("TTL")
                         .HasColumnType("real");
 
-                    b.HasKey("SeqNum");
+                    b.HasKey("ID");
 
                     b.HasIndex("BaseID");
 
@@ -628,9 +631,14 @@ namespace _3LTB.Migrations
                     b.Property<int>("OpDateID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SequenceID")
+                        .HasColumnType("int");
+
                     b.HasKey("SequenceSeqNum", "OpDateID");
 
                     b.HasIndex("OpDateID");
+
+                    b.HasIndex("SequenceID");
 
                     b.ToTable("SequenceOpDate");
                 });
@@ -690,7 +698,7 @@ namespace _3LTB.Migrations
                 {
                     b.HasOne("_3LTB.Models.Sequence", "Sequence")
                         .WithMany("DutyPeriods")
-                        .HasForeignKey("SequenceSeqNum")
+                        .HasForeignKey("SequenceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -723,9 +731,7 @@ namespace _3LTB.Migrations
 
                     b.HasOne("_3LTB.Models.Sequence", "Sequence")
                         .WithMany("SequenceOpDates")
-                        .HasForeignKey("SequenceSeqNum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SequenceID");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,7 +12,8 @@ namespace _3LTB.Models
     {
         public Base Base { get; set; }
         public int BaseID { get; set; }
-        [Key]
+        public int ID { get; set; }
+        private static int nextId = 1;
         [Name("SeqNum")]
         public int SeqNum { get; set; }
         [Name("TTL")]
@@ -26,6 +27,11 @@ namespace _3LTB.Models
 
         public IList<DutyPeriod> DutyPeriods { get; set; }
         public IList<SequenceOpDate> SequenceOpDates { get; set; }
+        public Sequence()
+        {
+            ID = nextId;
+            nextId++;
+        }
 
     }
 }

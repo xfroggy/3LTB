@@ -187,9 +187,10 @@ namespace _3LTB.Migrations
                 name: "Sequences",
                 columns: table => new
                 {
-                    SeqNum = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BaseID = table.Column<int>(nullable: false),
+                    SeqNum = table.Column<int>(nullable: false),
                     TTL = table.Column<float>(nullable: false),
                     RIG = table.Column<float>(nullable: false),
                     GTTL = table.Column<float>(nullable: false),
@@ -197,7 +198,7 @@ namespace _3LTB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sequences", x => x.SeqNum);
+                    table.PrimaryKey("PK_Sequences", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Sequences_Bases_BaseID",
                         column: x => x.BaseID,
@@ -212,7 +213,7 @@ namespace _3LTB.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SequenceSeqNum = table.Column<int>(nullable: false),
+                    SequenceID = table.Column<int>(nullable: false),
                     DPnum = table.Column<int>(nullable: false),
                     RPTdayNum = table.Column<string>(nullable: true),
                     RPTdepLCL = table.Column<string>(nullable: true),
@@ -225,10 +226,10 @@ namespace _3LTB.Migrations
                 {
                     table.PrimaryKey("PK_DutyPeriods", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_DutyPeriods_Sequences_SequenceSeqNum",
-                        column: x => x.SequenceSeqNum,
+                        name: "FK_DutyPeriods_Sequences_SequenceID",
+                        column: x => x.SequenceID,
                         principalTable: "Sequences",
-                        principalColumn: "SeqNum",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -237,7 +238,8 @@ namespace _3LTB.Migrations
                 columns: table => new
                 {
                     SequenceSeqNum = table.Column<int>(nullable: false),
-                    OpDateID = table.Column<int>(nullable: false)
+                    OpDateID = table.Column<int>(nullable: false),
+                    SequenceID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,11 +251,11 @@ namespace _3LTB.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_Sequences_SequenceSeqNum",
-                        column: x => x.SequenceSeqNum,
+                        name: "FK_SequenceOpDate_Sequences_SequenceID",
+                        column: x => x.SequenceID,
                         principalTable: "Sequences",
-                        principalColumn: "SeqNum",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -387,9 +389,9 @@ namespace _3LTB.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DutyPeriods_SequenceSeqNum",
+                name: "IX_DutyPeriods_SequenceID",
                 table: "DutyPeriods",
-                column: "SequenceSeqNum");
+                column: "SequenceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Legs_DutyPeriodID",
@@ -400,6 +402,11 @@ namespace _3LTB.Migrations
                 name: "IX_SequenceOpDate_OpDateID",
                 table: "SequenceOpDate",
                 column: "OpDateID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SequenceOpDate_SequenceID",
+                table: "SequenceOpDate",
+                column: "SequenceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sequences_BaseID",

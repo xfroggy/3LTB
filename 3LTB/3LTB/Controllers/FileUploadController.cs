@@ -11,6 +11,7 @@ using _3LTB.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace _3LTB.Controllers
 {
@@ -51,71 +52,204 @@ namespace _3LTB.Controllers
                         await formFile.CopyToAsync(stream);
                     }
 
+                   // context.Database.OpenConnection();
+
+                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
+                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
                     using (var reader = new StreamReader(filePath))
                     {
+                        List<DutyPeriod> sequenceDutyPeriods = new List<DutyPeriod>();
+                        Base currentBase = new Base();
+                        Sequence currentSequence = new Sequence();
+                        DutyPeriod currentDutyPeriod = new DutyPeriod();
+                        Leg currentLeg = new Leg();
                         var parser = new CsvParser(reader, CultureInfo.InvariantCulture);
                         while (true)
                         {
-
+                            
                             var row = parser.Read();
-                            if (row[0] != "" && row[0] != "BaseName")
+                            if (row == null)
                             {
-                                Base currentBase = context.Bases.Single(c => c.BaseName == row[0]);
-                                Sequence newSequence = new Sequence
-                                {
-                                    BaseID = currentBase.ID
-                                };
+                                break;
                             }
-                            else
+                            //Get [0] Base
+                            if (row[0] != "" && row[0] != "BaseName") 
                             {
-                                if (row[1] != "" && row[1] != "SeqNum")
-                                {
-                                    Sequence newSequence = new Sequence
-                                    {
+                                currentBase = new Base();
+                                currentBase = context.Bases.Single(c => c.BaseName == row[0]);
 
-                                    };
+                                //currentSequence = new Sequence();
+                                //currentSequence.BaseID = currentBase.ID;
+                                //currentSequence.SeqNum = Int32.Parse(row[1]);
+                                //currentSequence.DaysOp = Int32.Parse(row[24]);
+                               
+                            }
+
+                            //Get [1] Sequence start
+                            if (row[1] != "" && row[1] != "SeqNum")
+                            {
+                                currentSequence = new Sequence();//start a new sequence
+                                
+                                currentSequence.BaseID = currentBase.ID;
+                                currentSequence.SeqNum = Int32.Parse(row[1]);
+                                currentSequence.DaysOp = Int32.Parse(row[24]);
+                                
+
+                            }
+
+                            //get [2] duty period start
+                            if (row[2] != "" && row[2] != "RPTdayNum" && row[3] !="")
+                            {
+                                currentDutyPeriod = new DutyPeriod();//start a new Duty Period
+                                
+                                currentDutyPeriod.SequenceID = currentSequence.ID;
+                                currentDutyPeriod.DPnum = Int32.Parse(row[2]);
+                                currentDutyPeriod.RPTdepLCL = row[3];
+                                currentDutyPeriod.RPTdepHBT = row[4];
+
+                                //context.Database.OpenConnection();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                                //context.DutyPeriods.Add(currentDutyPeriod);
+                                ////context.SaveChanges();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+                                
+                                //context.Database.CloseConnection();
+
+
+
+
+                            }
+
+                            //get [5] Leg
+                            if (row[5] != "" && row[5] != "DPnum")
+                            {
+                                currentLeg = new Leg();//start a new Leg
+                               
+                                currentLeg.DutyPeriodID = currentDutyPeriod.ID;
+                                currentLeg.DPnum = Int32.Parse(row[5]);
+                                currentLeg.DayNumStart = Int32.Parse(row[6]);
+                                currentLeg.DayNumEnd = Int32.Parse(row[7]);
+                                currentLeg.EQP = row[8];
+                                currentLeg.FLTnum = Int32.Parse(row[9]);
+                                currentLeg.DEPcity = row[10];
+                                currentLeg.DEPlcl = row[11];
+                                currentLeg.DEPhbt = row[12];
+                                currentLeg.ARRcity = row[13];
+                                currentLeg.ARRlcl = row[14];
+                                currentLeg.ARRhbt = row[15];
+                                currentLeg.LEGblock = float.Parse(row[16]);
+
+
+                                // try
+                                ////{
+                                //context.Database.OpenConnection();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
+                                //context.Legs.Add(currentLeg);
+                                //context.SaveChanges();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
+                                
+                                //context.Database.CloseConnection();
+
+
+                                //}
+
+
+                            }
+
+                            //get [18] duty period end
+                            if (row[18] != "" && row[18] != "RLSarrLCL" )
+                            {
+                                
+                                currentDutyPeriod.RLSarrLCL = row[18];
+                                currentDutyPeriod.RLSarrHBT = row[19];
+                                currentDutyPeriod.DPblock = float.Parse(row[20]);
+                                sequenceDutyPeriods.Add(currentDutyPeriod);
+
+
+
+                                //context.Database.OpenConnection();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                                //context.DutyPeriods.Add(currentDutyPeriod);
+                                //context.SaveChanges();
+                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+                                
+                                //context.Database.CloseConnection();
+
+
+
+
+                            }
+
+
+                            //Get [21] Sequence end
+                            if (row[21] != "" && row[21] != "TTL")
+                            {
+                                
+                                currentSequence.TTL = float.Parse(row[21]);
+                                currentSequence.RIG = float.Parse(row[22]);
+                                currentSequence.GTTL = float.Parse(row[23]);
+
+
+                                
+                                try
+                                {
+                                    context.Database.OpenConnection();
+                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
+
+                                    context.Sequences.Add(currentSequence);
+                                    context.SaveChanges();
+
+                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences OFF");
+
+                                    //List<DutyPeriod> sequenceDutyPeriods = sequenceDutyPeriods
+                                    //   .Where(c => c.SequenceID == currentSequence.ID);
+
+                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                                    foreach (DutyPeriod DP in sequenceDutyPeriods.Where(n => n.SequenceID == currentSequence.ID))
+                                  
+                                    //foreach (DutyPeriod DP in sequenceDutyPeriods)
+                                    {
+                                        context.DutyPeriods.Add(DP);
+                                    }
+
+                                    context.SaveChanges();
+
+                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+
+
+
+
 
                                 }
-                            }
+                                finally
+                                {
+                                    context.Database.CloseConnection();
+
+                                    
+
+                                }
+
+}
 
 
 
-                                    //var tBase = row[0];
-                                    //var tSeq = row[1];
-                                    //var tRPTday = row[2];
-                                    if (row == null)
-                                    {
-                                        break;
-                                    }
-                            
+
+
                         }
                     }
-
-                        //TextReader reader = new StreamReader(filePath);
-                        //var csvReader = new CsvReader(reader);
-                        //var records = csvReader.GetRecords<SeqNum>();
-
-                        //using (var reader = new StreamReader(filePath))
-                        //using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                        //{
-                        //    //csv.Configuration.AutoMap<Sequence>();
-                        //    csv.Configuration.IgnoreQuotes = true;
-                        //    csv.Configuration.HeaderValidated = null;
-                        //    csv.Configuration.MissingFieldFound = null;
-                        //    var records = csv.GetRecords<Sequence>();
-
-                        //        Console.WriteLine(records.SeqNum);
-
-                        //}
 
                 }
             }
 
-                // process uploaded files
-                // Don't rely on or trust the FileName property without validation.
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
 
-        return Ok(new { count = files.Count, size, filePaths });
+            return Redirect("/Home");
+            //Ok(new { count = files.Count, size, filePaths });
         }
+
+        
 
             //[HttpPost]
             //public ActionResult Index(HttpPostedFileBase postedFile)
