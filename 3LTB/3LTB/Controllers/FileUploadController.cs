@@ -19,7 +19,6 @@ namespace _3LTB.Controllers
     public class FileUploadController : Controller
     {
         private _3LTBContext context;
-        //private readonly _3LTBContext context;
         public FileUploadController(_3LTBContext dbContext)
         {
             context = dbContext;
@@ -32,7 +31,7 @@ namespace _3LTB.Controllers
         }
 
 
-
+        //upload csv file and process into the database - Bases/Sequences/DutyPeriods/Legs
         [HttpPost("FileUpload")]
         public async Task<IActionResult> Index(List<IFormFile> files)
         {
@@ -52,14 +51,10 @@ namespace _3LTB.Controllers
                         await formFile.CopyToAsync(stream);
                     }
 
-                   // context.Database.OpenConnection();
-
-                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
-                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
-                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
                     using (var reader = new StreamReader(filePath))
                     {
                         List<DutyPeriod> sequenceDutyPeriods = new List<DutyPeriod>();
+                        List<Leg> DutyPeriodLegs = new List<Leg>();
                         Base currentBase = new Base();
                         Sequence currentSequence = new Sequence();
                         DutyPeriod currentDutyPeriod = new DutyPeriod();
@@ -74,57 +69,47 @@ namespace _3LTB.Controllers
                                 break;
                             }
                             //Get [0] Base
+
+                            //currentBase = Base.GetInstance(row);
                             if (row[0] != "" && row[0] != "BaseName") 
                             {
-                                currentBase = new Base();
+                                if (currentBase.ID != 0)
+                                {
+                                    currentBase = new Base();
+                                }
+                                
                                 currentBase = context.Bases.Single(c => c.BaseName == row[0]);
-
-                                //currentSequence = new Sequence();
-                                //currentSequence.BaseID = currentBase.ID;
-                                //currentSequence.SeqNum = Int32.Parse(row[1]);
-                                //currentSequence.DaysOp = Int32.Parse(row[24]);
-                               
+                         
                             }
-
+                            
                             //Get [1] Sequence start
                             if (row[1] != "" && row[1] != "SeqNum")
-                            {
-                                currentSequence = new Sequence();//start a new sequence
+                            {                          
+                                if (currentBase.ID != 0)
+                                {
+                                    currentSequence.BaseID = currentBase.ID;
+                                }
                                 
-                                currentSequence.BaseID = currentBase.ID;
                                 currentSequence.SeqNum = Int32.Parse(row[1]);
-                                currentSequence.DaysOp = Int32.Parse(row[24]);
-                                
-
+                                currentSequence.DaysOp = Int32.Parse(row[24]);                               
                             }
 
                             //get [2] duty period start
                             if (row[2] != "" && row[2] != "RPTdayNum" && row[3] !="")
                             {
-                                currentDutyPeriod = new DutyPeriod();//start a new Duty Period
+                                //currentDutyPeriod = new DutyPeriod();//start a new Duty Period
                                 
                                 currentDutyPeriod.SequenceID = currentSequence.ID;
                                 currentDutyPeriod.DPnum = Int32.Parse(row[2]);
                                 currentDutyPeriod.RPTdepLCL = row[3];
                                 currentDutyPeriod.RPTdepHBT = row[4];
 
-                                //context.Database.OpenConnection();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
-                                //context.DutyPeriods.Add(currentDutyPeriod);
-                                ////context.SaveChanges();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
-                                
-                                //context.Database.CloseConnection();
-
-
-
-
                             }
 
                             //get [5] Leg
                             if (row[5] != "" && row[5] != "DPnum")
                             {
-                                currentLeg = new Leg();//start a new Leg
+                                //currentLeg = new Leg();//start a new Leg
                                
                                 currentLeg.DutyPeriodID = currentDutyPeriod.ID;
                                 currentLeg.DPnum = Int32.Parse(row[5]);
@@ -140,21 +125,8 @@ namespace _3LTB.Controllers
                                 currentLeg.ARRhbt = row[15];
                                 currentLeg.LEGblock = float.Parse(row[16]);
 
-
-                                // try
-                                ////{
-                                //context.Database.OpenConnection();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
-                                //context.Legs.Add(currentLeg);
-                                //context.SaveChanges();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
-                                
-                                //context.Database.CloseConnection();
-
-
-                                //}
-
-
+                                DutyPeriodLegs.Add(currentLeg);
+                                currentLeg = new Leg();
                             }
 
                             //get [18] duty period end
@@ -166,19 +138,8 @@ namespace _3LTB.Controllers
                                 currentDutyPeriod.DPblock = float.Parse(row[20]);
                                 sequenceDutyPeriods.Add(currentDutyPeriod);
 
-
-
-                                //context.Database.OpenConnection();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
-                                //context.DutyPeriods.Add(currentDutyPeriod);
-                                //context.SaveChanges();
-                                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
-                                
-                                //context.Database.CloseConnection();
-
-
-
-
+                                //start a new Duty Period
+                                currentDutyPeriod = new DutyPeriod();
                             }
 
 
@@ -197,40 +158,42 @@ namespace _3LTB.Controllers
                                     context.Database.OpenConnection();
                                     context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
 
+                                    // add sequence to database
                                     context.Sequences.Add(currentSequence);
                                     context.SaveChanges();
 
                                     context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences OFF");
-
-                                    //List<DutyPeriod> sequenceDutyPeriods = sequenceDutyPeriods
-                                    //   .Where(c => c.SequenceID == currentSequence.ID);
-
-                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                                   
                                     foreach (DutyPeriod DP in sequenceDutyPeriods.Where(n => n.SequenceID == currentSequence.ID))
-                                  
-                                    //foreach (DutyPeriod DP in sequenceDutyPeriods)
+
+                                    //foreach (DutyPeriod DP in sequenceDutyPeriods) - add to database
                                     {
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
                                         context.DutyPeriods.Add(DP);
-                                    }
+                                        context.SaveChanges();
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
 
-                                    context.SaveChanges();
+                                        // for each leg in the DP, add the leg to databse
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
+                                        foreach (Leg leg in DutyPeriodLegs.Where(n => n.ID == DP.ID))
 
-                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+                                        {
+                                            context.Legs.Add(leg);
+                                        }
 
-
-
-
-
+                                        context.SaveChanges();
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
+                                    } 
                                 }
                                 finally
                                 {
                                     context.Database.CloseConnection();
 
-                                    
-
+                                    //initialize next sequence
+                                    currentSequence = new Sequence();
                                 }
 
-}
+                            }
 
 
 
@@ -238,89 +201,15 @@ namespace _3LTB.Controllers
 
                         }
                     }
-
                 }
             }
-
-            // process uploaded files
+          
             // Don't rely on or trust the FileName property without validation.
-
             return Redirect("/Home");
-            //Ok(new { count = files.Count, size, filePaths });
         }
 
         
 
-            //[HttpPost]
-            //public ActionResult Index(HttpPostedFileBase postedFile)
-            //{
-            //    string filePath = string.Empty;
-            //    if (postedFile != null)
-            //    {
-            //        string path = Server.MapPath("~/Uploads/");
-            //        if (!Directory.Exists(path))
-            //        {
-            //            Directory.CreateDirectory(path);
-            //        }
-
-            //        filePath = path + Path.GetFileName(postedFile.FileName);
-            //        string extension = Path.GetExtension(postedFile.FileName);
-            //        postedFile.SaveAs(filePath);
-
-            //        string conString = string.Empty;
-            //        switch (extension)
-            //        {
-            //            case ".xls": //Excel 97-03.
-            //                conString = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
-            //                break;
-            //            case ".xlsx": //Excel 07 and above.
-            //                conString = ConfigurationManager.ConnectionStrings["Excel07ConString"].ConnectionString;
-            //                break;
-            //        }
-
-            //        DataTable dt = new DataTable();
-            //        conString = string.Format(conString, filePath);
-
-            //        using (OleDbConnection connExcel = new OleDbConnection(conString))
-            //        {
-            //            using (OleDbCommand cmdExcel = new OleDbCommand())
-            //            {
-            //                using (OleDbDataAdapter odaExcel = new OleDbDataAdapter())
-            //                {
-            //                    cmdExcel.Connection = connExcel;
-
-            //                    //Get the name of First Sheet.
-            //                    connExcel.Open();
-            //                    DataTable dtExcelSchema;
-            //                    dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            //                    string sheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
-            //                    connExcel.Close();
-
-            //                    //Read Data from First Sheet.
-            //                    connExcel.Open();
-            //                    cmdExcel.CommandText = "SELECT * From [" + sheetName + "]";
-            //                    odaExcel.SelectCommand = cmdExcel;
-            //                    odaExcel.Fill(dt);
-            //                    connExcel.Close();
-            //                }
-            //            }
-            //        }
-
-            //        //Insert records to database table.
-            //        CustomersEntities entities = new CustomersEntities();
-            //        foreach (DataRow row in dt.Rows)
-            //        {
-            //            entities.Customers.Add(new Customer
-            //            {
-            //                Name = row["Name"].ToString(),
-            //                Country = row["Country"].ToString()
-            //            });
-            //        }
-            //        entities.SaveChanges();
-            //    }
-
-            //    return View();
-            //}
         
     } 
 }

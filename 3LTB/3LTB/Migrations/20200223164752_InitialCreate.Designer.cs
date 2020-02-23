@@ -10,7 +10,7 @@ using _3LTB.Data;
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    [Migration("20200220120416_InitialCreate")]
+    [Migration("20200223164752_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

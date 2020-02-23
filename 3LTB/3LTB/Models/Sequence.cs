@@ -32,6 +32,18 @@ namespace _3LTB.Models
             ID = nextId;
             nextId++;
         }
+      
+
+        //private static Sequence instance;
+        //public static Sequence GetInstance()
+        //{
+        //    if (instance == null)
+        //    {
+        //        instance = new Sequence();
+        //    }
+
+        //    return instance;
+        //}
 
     }
 }

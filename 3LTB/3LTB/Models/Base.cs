@@ -16,7 +16,7 @@ namespace _3LTB.Models
         public int ID { get; set; }
         public string BaseName { get; set; }
         public IList<Sequence> Sequences { get; set; }
- 
+
 
     }
 }

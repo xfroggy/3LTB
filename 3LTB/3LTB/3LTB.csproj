@@ -92,6 +92,18 @@
     <Compile Remove="Migrations\20200219140447_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200219141729_InitialCreate.cs" />
     <Compile Remove="Migrations\20200219141729_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200220120416_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200220120416_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200220132904_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200220132904_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223140255_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223140255_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223143426_add-migratin InitialCreae.cs" />
+    <Compile Remove="Migrations\20200223143426_add-migratin InitialCreae.Designer.cs" />
+    <Compile Remove="Migrations\20200223143509_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223143509_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223144303_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223144303_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
