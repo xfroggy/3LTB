@@ -66,6 +66,12 @@ namespace _3LTB.Areas.Identity.Pages.Account
             public string Base { get; set; }
 
             [Required]
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -101,7 +107,8 @@ namespace _3LTB.Areas.Identity.Pages.Account
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     SeniorityNumber = Input.SeniorityNumber,
-                    Base = Input.Base
+                    Base = Input.Base,
+                    PhoneNumber = Input.PhoneNumber
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

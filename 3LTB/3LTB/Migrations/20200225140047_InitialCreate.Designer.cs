@@ -10,7 +10,7 @@ using _3LTB.Data;
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    [Migration("20200223164752_InitialCreate")]
+    [Migration("20200225140047_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -589,6 +589,51 @@ namespace _3LTB.Migrations
                             ID = 33,
                             DateOp = 1
                         });
+                });
+
+            modelBuilder.Entity("_3LTB.Models.Post", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ArrivalCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartureCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Flight")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FlightDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Lang")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("RedFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Report")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Trade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("_3LTB.Models.Sequence", b =>

@@ -40,6 +40,10 @@
     <Compile Remove="Migrations\20200201130112_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200201161338_InitialCreate.cs" />
     <Compile Remove="Migrations\20200201161338_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200206230832_AddPostTable.cs" />
+    <Compile Remove="Migrations\20200206230832_AddPostTable.Designer.cs" />
+    <Compile Remove="Migrations\20200208163452_AddPostTable2.cs" />
+    <Compile Remove="Migrations\20200208163452_AddPostTable2.Designer.cs" />
     <Compile Remove="Migrations\20200208230103_InitialCreate.cs" />
     <Compile Remove="Migrations\20200208230103_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200208231055_InitialCreate.cs" />
@@ -104,6 +108,14 @@
     <Compile Remove="Migrations\20200223143509_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200223144303_InitialCreate.cs" />
     <Compile Remove="Migrations\20200223144303_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223164752_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223164752_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171127_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171127_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171318_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171318_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171857_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171857_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
