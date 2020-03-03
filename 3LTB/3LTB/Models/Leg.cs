@@ -10,6 +10,7 @@ namespace _3LTB.Models
         public DutyPeriod DutyPeriod { get; set; }
         public int DutyPeriodID { get; set; }
         public int ID { get; set; }
+        private static int nextId = 1;
         public int DPnum { get; set; }
         public int DayNumStart { get; set; }
         public int DayNumEnd { get; set; }
@@ -22,5 +23,10 @@ namespace _3LTB.Models
         public string ARRlcl { get; set; }
         public string ARRhbt { get; set; }
         public float LEGblock { get; set; }
+        public Leg()
+        {
+            ID = nextId;
+            nextId++;
+        }
     }
 }

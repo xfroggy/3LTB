@@ -7,9 +7,11 @@ namespace _3LTB.Models
 {
     public class DutyPeriod
     {
+       
         public Sequence Sequence { get; set; }
-        public int SequenceSeqNum { get; set; }
+        public int SequenceID { get; set; }
         public int ID { get; set; }
+        private static int nextId = 1;
         public int DPnum { get; set; }
         public string RPTdayNum { get; set; }
         public string RPTdepLCL { get; set; }
@@ -18,6 +20,12 @@ namespace _3LTB.Models
         public string RLSarrHBT { get; set; }
         public float DPblock { get; set; }
         public IList<Leg> Legs { get; set; }
+
+        public DutyPeriod()
+        {
+            ID = nextId;
+            nextId++;
+        }
 
     }
 }

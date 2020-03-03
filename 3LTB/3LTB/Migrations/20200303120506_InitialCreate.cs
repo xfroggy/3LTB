@@ -57,7 +57,7 @@ namespace _3LTB.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BaseName = table.Column<int>(nullable: false)
+                    BaseName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,7 +65,7 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OpDate",
+                name: "OpDates",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -74,7 +74,30 @@ namespace _3LTB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OpDate", x => x.ID);
+                    table.PrimaryKey("PK_OpDates", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(nullable: true),
+                    DepartureCity = table.Column<string>(nullable: true),
+                    Trade = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    Flight = table.Column<int>(nullable: false),
+                    FlightDate = table.Column<DateTime>(nullable: false),
+                    Position = table.Column<int>(nullable: false),
+                    Report = table.Column<string>(nullable: true),
+                    Lang = table.Column<bool>(nullable: false),
+                    ArrivalCity = table.Column<string>(nullable: true),
+                    RedFlag = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,9 +210,10 @@ namespace _3LTB.Migrations
                 name: "Sequences",
                 columns: table => new
                 {
-                    SeqNum = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BaseID = table.Column<int>(nullable: false),
+                    SeqNum = table.Column<int>(nullable: false),
                     TTL = table.Column<float>(nullable: false),
                     RIG = table.Column<float>(nullable: false),
                     GTTL = table.Column<float>(nullable: false),
@@ -197,7 +221,7 @@ namespace _3LTB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sequences", x => x.SeqNum);
+                    table.PrimaryKey("PK_Sequences", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Sequences_Bases_BaseID",
                         column: x => x.BaseID,
@@ -212,7 +236,7 @@ namespace _3LTB.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SequenceSeqNum = table.Column<int>(nullable: false),
+                    SequenceID = table.Column<int>(nullable: false),
                     DPnum = table.Column<int>(nullable: false),
                     RPTdayNum = table.Column<string>(nullable: true),
                     RPTdepLCL = table.Column<string>(nullable: true),
@@ -225,10 +249,10 @@ namespace _3LTB.Migrations
                 {
                     table.PrimaryKey("PK_DutyPeriods", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_DutyPeriods_Sequences_SequenceSeqNum",
-                        column: x => x.SequenceSeqNum,
+                        name: "FK_DutyPeriods_Sequences_SequenceID",
+                        column: x => x.SequenceID,
                         principalTable: "Sequences",
-                        principalColumn: "SeqNum",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -236,23 +260,23 @@ namespace _3LTB.Migrations
                 name: "SequenceOpDate",
                 columns: table => new
                 {
-                    SequenceSeqNum = table.Column<int>(nullable: false),
+                    SequenceID = table.Column<int>(nullable: false),
                     OpDateID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceSeqNum, x.OpDateID });
+                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceID, x.OpDateID });
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_OpDate_OpDateID",
+                        name: "FK_SequenceOpDate_OpDates_OpDateID",
                         column: x => x.OpDateID,
-                        principalTable: "OpDate",
+                        principalTable: "OpDates",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_Sequences_SequenceSeqNum",
-                        column: x => x.SequenceSeqNum,
+                        name: "FK_SequenceOpDate_Sequences_SequenceID",
+                        column: x => x.SequenceID,
                         principalTable: "Sequences",
-                        principalColumn: "SeqNum",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -285,6 +309,66 @@ namespace _3LTB.Migrations
                         principalTable: "DutyPeriods",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Bases",
+                columns: new[] { "ID", "BaseName" },
+                values: new object[,]
+                {
+                    { 1, "BOS" },
+                    { 13, "SLT" },
+                    { 12, "SFO" },
+                    { 11, "RDU" },
+                    { 9, "PHL" },
+                    { 8, "ORD" },
+                    { 10, "PHX" },
+                    { 6, "LGA" },
+                    { 5, "LAX" },
+                    { 4, "DFW" },
+                    { 3, "DCA" },
+                    { 2, "CLT" },
+                    { 7, "MIA" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OpDates",
+                columns: new[] { "ID", "DateOp" },
+                values: new object[,]
+                {
+                    { 23, 22 },
+                    { 19, 18 },
+                    { 20, 19 },
+                    { 21, 20 },
+                    { 22, 21 },
+                    { 24, 23 },
+                    { 31, 30 },
+                    { 26, 25 },
+                    { 27, 26 },
+                    { 28, 29 },
+                    { 29, 28 },
+                    { 30, 29 },
+                    { 18, 17 },
+                    { 25, 24 },
+                    { 17, 16 },
+                    { 10, 9 },
+                    { 15, 16 },
+                    { 1, 31 },
+                    { 2, 1 },
+                    { 3, 2 },
+                    { 4, 3 },
+                    { 5, 4 },
+                    { 6, 5 },
+                    { 16, 15 },
+                    { 7, 6 },
+                    { 9, 8 },
+                    { 32, 31 },
+                    { 11, 10 },
+                    { 12, 11 },
+                    { 13, 12 },
+                    { 14, 13 },
+                    { 8, 7 },
+                    { 33, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -327,9 +411,9 @@ namespace _3LTB.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DutyPeriods_SequenceSeqNum",
+                name: "IX_DutyPeriods_SequenceID",
                 table: "DutyPeriods",
-                column: "SequenceSeqNum");
+                column: "SequenceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Legs_DutyPeriodID",
@@ -368,6 +452,9 @@ namespace _3LTB.Migrations
                 name: "Legs");
 
             migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
                 name: "SequenceOpDate");
 
             migrationBuilder.DropTable(
@@ -380,7 +467,7 @@ namespace _3LTB.Migrations
                 name: "DutyPeriods");
 
             migrationBuilder.DropTable(
-                name: "OpDate");
+                name: "OpDates");
 
             migrationBuilder.DropTable(
                 name: "Sequences");
