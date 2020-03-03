@@ -260,13 +260,12 @@ namespace _3LTB.Migrations
                 name: "SequenceOpDate",
                 columns: table => new
                 {
-                    SequenceSeqNum = table.Column<int>(nullable: false),
-                    OpDateID = table.Column<int>(nullable: false),
-                    SequenceID = table.Column<int>(nullable: true)
+                    SequenceID = table.Column<int>(nullable: false),
+                    OpDateID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceSeqNum, x.OpDateID });
+                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceID, x.OpDateID });
                     table.ForeignKey(
                         name: "FK_SequenceOpDate_OpDates_OpDateID",
                         column: x => x.OpDateID,
@@ -278,7 +277,7 @@ namespace _3LTB.Migrations
                         column: x => x.SequenceID,
                         principalTable: "Sequences",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -425,11 +424,6 @@ namespace _3LTB.Migrations
                 name: "IX_SequenceOpDate_OpDateID",
                 table: "SequenceOpDate",
                 column: "OpDateID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SequenceOpDate_SequenceID",
-                table: "SequenceOpDate",
-                column: "SequenceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sequences_BaseID",

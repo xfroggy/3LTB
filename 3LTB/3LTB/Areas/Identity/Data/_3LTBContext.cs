@@ -35,7 +35,7 @@ namespace _3LTB.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<SequenceOpDate>()
-                .HasKey(c => new { c.SequenceSeqNum, c.OpDateID });
+                .HasKey(c => new { c.SequenceID, c.OpDateID });
             builder.Entity<Base>().HasData(new Base
             {
                 ID = 1,

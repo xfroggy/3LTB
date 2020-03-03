@@ -10,7 +10,7 @@ using _3LTB.Data;
 namespace _3LTB.Migrations
 {
     [DbContext(typeof(_3LTBContext))]
-    [Migration("20200225140047_InitialCreate")]
+    [Migration("20200303120506_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -670,20 +670,15 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("_3LTB.Models.SequenceOpDate", b =>
                 {
-                    b.Property<int>("SequenceSeqNum")
+                    b.Property<int>("SequenceID")
                         .HasColumnType("int");
 
                     b.Property<int>("OpDateID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SequenceID")
-                        .HasColumnType("int");
-
-                    b.HasKey("SequenceSeqNum", "OpDateID");
+                    b.HasKey("SequenceID", "OpDateID");
 
                     b.HasIndex("OpDateID");
-
-                    b.HasIndex("SequenceID");
 
                     b.ToTable("SequenceOpDate");
                 });
@@ -776,7 +771,9 @@ namespace _3LTB.Migrations
 
                     b.HasOne("_3LTB.Models.Sequence", "Sequence")
                         .WithMany("SequenceOpDates")
-                        .HasForeignKey("SequenceID");
+                        .HasForeignKey("SequenceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
