@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -38,9 +38,103 @@
     <Compile Remove="Migrations\20200201124726_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200201130112_InitialCreate.cs" />
     <Compile Remove="Migrations\20200201130112_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200201161338_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200201161338_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200206230832_AddPostTable.cs" />
+    <Compile Remove="Migrations\20200206230832_AddPostTable.Designer.cs" />
+    <Compile Remove="Migrations\20200208163452_AddPostTable2.cs" />
+    <Compile Remove="Migrations\20200208163452_AddPostTable2.Designer.cs" />
+    <Compile Remove="Migrations\20200208230103_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208230103_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200208231055_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208231055_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200208232718_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200208232718_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200209010430_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200209010430_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200209010748_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200209010748_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200209020119_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200209020119_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200211233854_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200211233854_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216152251_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216152251_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216153129_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216153129_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216153811_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216153811_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216200304_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216200304_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216203430_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216203430_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216204412_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216204412_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216204808_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216204808_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216210636_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216210636_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216211727_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216211727_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216222413_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216222413_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216224402_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216224402_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216224619_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216224619_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216225144_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216225144_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200216225545_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200216225545_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200217024049_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200217024049_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200217144322_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200217144322_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200219135809_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200219135809_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200219140447_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200219140447_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200219141729_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200219141729_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200220120416_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200220120416_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200220132904_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200220132904_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223140255_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223140255_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223143426_add-migratin InitialCreae.cs" />
+    <Compile Remove="Migrations\20200223143426_add-migratin InitialCreae.Designer.cs" />
+    <Compile Remove="Migrations\20200223143509_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223143509_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223144303_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223144303_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223164752_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223164752_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171127_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171127_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171318_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171318_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200223171857_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200223171857_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200225140047_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200225140047_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200225174558_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200225174558_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200226120654_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200226120654_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200226162422_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200226162422_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200303120506_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200303120506_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="SeedData\BulkData.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="14.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
@@ -50,7 +144,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
 
