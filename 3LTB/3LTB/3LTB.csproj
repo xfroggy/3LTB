@@ -124,6 +124,8 @@
     <Compile Remove="Migrations\20200226120654_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200226162422_InitialCreate.cs" />
     <Compile Remove="Migrations\20200226162422_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200303120506_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200303120506_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace _3LTB.Data
 
       
 
-        public virtual DbSet<Post> Posts { get; set; }
+        //public virtual DbSet<Post> Posts { get; set; }
 
         public _3LTBContext(DbContextOptions<_3LTBContext> options)
             : base(options)
