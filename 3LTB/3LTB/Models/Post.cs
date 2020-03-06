@@ -16,7 +16,7 @@ namespace _3LTB.Models
         public int Flight { get; set; }
         //Had to define DataFormatString here so that it displays properly??
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:ddMMM}", ApplyFormatInEditMode = true)]
         public DateTime FlightDate { get; set; }
         public int Position { get; set; }
         public string Report { get; set; }
