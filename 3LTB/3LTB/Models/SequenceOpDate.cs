@@ -7,11 +7,12 @@ namespace _3LTB.Models
 {
     public class SequenceOpDate
     {
+        public int OpDateID { get; set; }
+        public OpDate OpDate { get; set; }
         public int SequenceID { get; set; }
         public Sequence Sequence { get; set; }
 
-        public int OpDateID { get; set; }
-        public OpDate OpDate { get; set; }
+
 
 
     }

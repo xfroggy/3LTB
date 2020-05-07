@@ -329,13 +329,13 @@ namespace _3LTB.Migrations
                     b.Property<int>("DPnum")
                         .HasColumnType("int");
 
+                    b.Property<float>("DPrig")
+                        .HasColumnType("real");
+
                     b.Property<string>("RLSarrHBT")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RLSarrLCL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RPTdayNum")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RPTdepHBT")
@@ -346,6 +346,9 @@ namespace _3LTB.Migrations
 
                     b.Property<int>("SequenceID")
                         .HasColumnType("int");
+
+                    b.Property<float>("dpTOD")
+                        .HasColumnType("real");
 
                     b.HasKey("ID");
 
@@ -394,8 +397,8 @@ namespace _3LTB.Migrations
                     b.Property<string>("EQP")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FLTnum")
-                        .HasColumnType("int");
+                    b.Property<string>("FLTnum")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("LEGblock")
                         .HasColumnType("real");
@@ -668,17 +671,17 @@ namespace _3LTB.Migrations
 
             modelBuilder.Entity("_3LTB.Models.SequenceOpDate", b =>
                 {
-                    b.Property<int>("SequenceID")
-                        .HasColumnType("int");
-
                     b.Property<int>("OpDateID")
                         .HasColumnType("int");
 
-                    b.HasKey("SequenceID", "OpDateID");
+                    b.Property<int>("SequenceID")
+                        .HasColumnType("int");
 
-                    b.HasIndex("OpDateID");
+                    b.HasKey("OpDateID", "SequenceID");
 
-                    b.ToTable("SequenceOpDate");
+                    b.HasIndex("SequenceID");
+
+                    b.ToTable("SequenceOpDates");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

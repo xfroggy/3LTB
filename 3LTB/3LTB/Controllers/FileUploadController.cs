@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using _3LTB.Data;
+﻿using _3LTB.Data;
 using _3LTB.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace _3LTB.Controllers
 {
@@ -54,6 +53,10 @@ namespace _3LTB.Controllers
                     using (var reader = new StreamReader(filePath))
                     {
                         List<DutyPeriod> sequenceDutyPeriods = new List<DutyPeriod>();
+                        SequenceOpDate sequenceOpDate = new SequenceOpDate();
+                        String[] DateArrayFirst = null;
+                        String[] DateArray = null;
+                        int dtId;
                         List<Leg> DutyPeriodLegs = new List<Leg>();
                         Base currentBase = new Base();
                         Sequence currentSequence = new Sequence();
@@ -62,7 +65,7 @@ namespace _3LTB.Controllers
                         var parser = new CsvParser(reader, CultureInfo.InvariantCulture);
                         while (true)
                         {
-                            
+
                             var row = parser.Read();
                             if (row == null)
                             {
@@ -71,71 +74,184 @@ namespace _3LTB.Controllers
                             //Get [0] Base
 
                             //currentBase = Base.GetInstance(row);
-                            if (row[0] != "" && row[0] != "BaseName") 
+                            if (row[1] != "" && row[1] != "BaseName")
                             {
-                                if (currentBase.ID != 0)
+                                
+                                if (currentBase.ID != 0 && currentBase.BaseName != row[1])
                                 {
                                     currentBase = new Base();
                                 }
-                                
-                                currentBase = context.Bases.Single(c => c.BaseName == row[0]);
-                         
+
+                                currentBase = context.Bases.Single(c => c.BaseName == row[1]);
+
                             }
-                            
+
                             //Get [1] Sequence start
-                            if (row[1] != "" && row[1] != "SeqNum")
-                            {                          
-                                if (currentBase.ID != 0)
-                                {
-                                    currentSequence.BaseID = currentBase.ID;
+                            if (row[2] != "" && row[2] != "SeqNum" )
+                               
+                            {
+                                if (currentSequence.SeqNum != 0 && currentSequence.SeqNum != Int32.Parse(row[2]))
+                                {                                    
+                                    try
+                                    {
+                                        context.Database.OpenConnection();
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
+
+                                        // add sequence to database
+                                        context.Sequences.Add(currentSequence);
+                                        context.SaveChanges();
+                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences OFF");
+
+                                        // add DaysOp to joining table between Sequence/OpDate and joining table SequenceOpDate
+                                        if (DateArrayFirst != null)
+                                        { 
+                                            foreach (var dtf in DateArrayFirst)
+                                            {
+                                                if (dtf == "31")
+                                                {
+                                                    dtId = 1;
+                                                }
+                                                else dtId = 2;
+
+                                                SequenceOpDate DateItem = new SequenceOpDate
+                                                {
+                                                    OpDate = context.OpDates.Single(o => o.ID == dtId),
+                                                    Sequence = context.Sequences.Single(s => s.ID == currentSequence.ID)
+                                                };
+
+                                                // add sequence to database
+                                                context.SequenceOpDates.Add(DateItem);
+                                                context.SaveChanges();
+                                            }
+                                        }
+                                        if (DateArray != null)
+                                        {
+                                            foreach (var dt in DateArray)
+                                            {
+
+                                                if (dt == "1")
+                                                {
+                                                    dtId = 33;
+                                                }
+                                                else dtId = int.Parse(dt) + 1;
+
+                                                SequenceOpDate DateItem = new SequenceOpDate
+                                                {
+                                                    OpDate = context.OpDates.Single(o => o.ID == dtId),
+                                                    Sequence = context.Sequences.Single(s => s.ID == currentSequence.ID)
+                                                };
+
+                                                // add sequence to database
+                                                context.SequenceOpDates.Add(DateItem);
+                                                context.SaveChanges();
+                                            }
+                                        }
+
+                                        foreach (DutyPeriod DP in sequenceDutyPeriods.Where(n => n.SequenceID == currentSequence.ID))
+
+                                        //foreach (DutyPeriod DP in sequenceDutyPeriods) - add to database
+                                        {
+                                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                                            context.DutyPeriods.Add(DP);
+                                            context.SaveChanges();
+                                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+
+                                            // for each leg in the DP, add the leg to databse
+                                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
+                                            foreach (Leg leg in DutyPeriodLegs.Where(n => n.ID == DP.ID))
+
+                                            {
+                                                context.Legs.Add(leg);
+                                            }
+
+                                            context.SaveChanges();
+                                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
+                                        }
+                                    }
+                                    finally
+                                    {
+                                        context.Database.CloseConnection();
+
+                                        //initialize next sequence
+                                        currentSequence = new Sequence();
+                                        DateArrayFirst = null;
+                                        DateArray = null;
+
+                                    }
+
                                 }
-                                
-                                currentSequence.SeqNum = Int32.Parse(row[1]);
-                                currentSequence.DaysOp = Int32.Parse(row[24]);                               
+
+                                if (currentSequence.SeqNum != Int32.Parse(row[2]))
+                                {
+                                    //currentSequence = new Sequence();
+                                    if (currentBase.ID != 0)
+                                    {
+                                        currentSequence.BaseID = currentBase.ID;
+                                    }
+                                    
+                                    currentSequence.SeqNum = Int32.Parse(row[2]);
+                                    currentSequence.DaysOp = Int32.Parse(row[3]);
+
+                                    currentSequence.TTL = float.Parse(row[6]);
+                                    currentSequence.RIG = float.Parse(row[7]);
+                                    currentSequence.GTTL = float.Parse(row[8]);
+                                    if (row[4] != "")
+                                    {
+                                        DateArrayFirst = row[4].Split(",");
+                                    }
+                                    if (row[5] != "")
+                                    {
+                                        DateArray = row[5].Split(",");
+                                    }
+                             
+
+                                }
                             }
 
                             //get [2] duty period start
-                            if (row[2] != "" && row[2] != "RPTdayNum" && row[3] !="")
+                            if (row[9] != "" && row[9] != "RPTdepLCL")
                             {
                                 //currentDutyPeriod = new DutyPeriod();//start a new Duty Period
-                                
-                                currentDutyPeriod.SequenceID = currentSequence.ID;
-                                currentDutyPeriod.DPnum = Int32.Parse(row[2]);
-                                currentDutyPeriod.RPTdepLCL = row[3];
-                                currentDutyPeriod.RPTdepHBT = row[4];
+
+                                currentDutyPeriod.SequenceID = currentSequence.ID;                               
+                                currentDutyPeriod.RPTdepLCL = row[9];
+                                currentDutyPeriod.RPTdepHBT = row[10];
 
                             }
 
                             //get [5] Leg
-                            if (row[5] != "" && row[5] != "DPnum")
+                            if (row[17] != "" && row[17] != "DPnum")
                             {
                                 //currentLeg = new Leg();//start a new Leg
-                               
+
                                 currentLeg.DutyPeriodID = currentDutyPeriod.ID;
-                                currentLeg.DPnum = Int32.Parse(row[5]);
-                                currentLeg.DayNumStart = Int32.Parse(row[6]);
-                                currentLeg.DayNumEnd = Int32.Parse(row[7]);
-                                currentLeg.EQP = row[8];
-                                currentLeg.FLTnum = Int32.Parse(row[9]);
-                                currentLeg.DEPcity = row[10];
-                                currentLeg.DEPlcl = row[11];
-                                currentLeg.DEPhbt = row[12];
-                                currentLeg.ARRcity = row[13];
-                                currentLeg.ARRlcl = row[14];
-                                currentLeg.ARRhbt = row[15];
-                                currentLeg.LEGblock = float.Parse(row[16]);
+                                currentLeg.DPnum = Int32.Parse(row[17]);
+                                currentDutyPeriod.DPnum = Int32.Parse(row[17]);
+                                currentLeg.DayNumStart = Int32.Parse(row[18]);
+                                currentLeg.DayNumEnd = Int32.Parse(row[19]);
+                                currentLeg.EQP = row[20];
+                                currentLeg.FLTnum = row[21];
+                                currentLeg.DEPcity = row[22];
+                                currentLeg.DEPlcl = row[23];
+                                currentLeg.DEPhbt = row[24];
+                                currentLeg.ARRcity = row[25];
+                                currentLeg.ARRlcl = row[26];
+                                currentLeg.ARRhbt = row[27];
+                                currentLeg.LEGblock = float.Parse(row[28]);
 
                                 DutyPeriodLegs.Add(currentLeg);
                                 currentLeg = new Leg();
                             }
 
-                            //get [18] duty period end
-                            if (row[18] != "" && row[18] != "RLSarrLCL" )
+                            //get [10] duty period end
+                            if (row[11] != "" && row[11] != "RLSarrLCL")
                             {
-                                
-                                currentDutyPeriod.RLSarrLCL = row[18];
-                                currentDutyPeriod.RLSarrHBT = row[19];
-                                currentDutyPeriod.DPblock = float.Parse(row[20]);
+
+                                currentDutyPeriod.RLSarrLCL = row[11];
+                                currentDutyPeriod.RLSarrHBT = row[12];
+                                currentDutyPeriod.DPblock = float.Parse(row[13]);
+                                currentDutyPeriod.DPrig = float.Parse(row[14]);
+                                currentDutyPeriod.dpTOD = float.Parse(row[15]);
                                 sequenceDutyPeriods.Add(currentDutyPeriod);
 
                                 //start a new Duty Period
@@ -144,56 +260,86 @@ namespace _3LTB.Controllers
 
 
                             //Get [21] Sequence end
-                            if (row[21] != "" && row[21] != "TTL")
-                            {
+                            //if (row[21] != "" && row[21] != "TTL")
+                            //{
+
+                            //    //currentSequence.TTL = float.Parse(row[21]);
+                            //    //currentSequence.RIG = float.Parse(row[22]);
+                            //    //currentSequence.GTTL = float.Parse(row[23]);
+                            //    //DateArray = row[25].Split(",");
+
                                 
-                                currentSequence.TTL = float.Parse(row[21]);
-                                currentSequence.RIG = float.Parse(row[22]);
-                                currentSequence.GTTL = float.Parse(row[23]);
 
+                            //    try
+                            //    {
+                            //        context.Database.OpenConnection();
+                            //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
 
-                                
-                                try
-                                {
-                                    context.Database.OpenConnection();
-                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences ON");
+                            //        // add sequence to database
+                            //        context.Sequences.Add(currentSequence);
+                            //        context.SaveChanges();
+                            //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences OFF");
 
-                                    // add sequence to database
-                                    context.Sequences.Add(currentSequence);
-                                    context.SaveChanges();
+                            //        // add DaysOp to joining table between Sequence/OpDate and joining table SequenceOpDate
+                            //        foreach (var dt in DateArray)
+                            //        {
 
-                                    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Sequences OFF");
-                                   
-                                    foreach (DutyPeriod DP in sequenceDutyPeriods.Where(n => n.SequenceID == currentSequence.ID))
+                            //            if (dt == "31a")
+                            //            {
+                            //                dtId = 1;
+                            //            }
+                            //            else if (dt == "1a")
+                            //            {
+                            //                dtId = 2;
+                            //            }
+                            //            else if (dt == "1")
+                            //            {
+                            //                dtId = 33;
+                            //            }
+                            //            else dtId = int.Parse(dt) + 1;
 
-                                    //foreach (DutyPeriod DP in sequenceDutyPeriods) - add to database
-                                    {
-                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
-                                        context.DutyPeriods.Add(DP);
-                                        context.SaveChanges();
-                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
+                            //            SequenceOpDate DateItem = new SequenceOpDate                                    
+                            //            {
+                            //                OpDate = context.OpDates.Single(o => o.ID == dtId),
+                            //                Sequence = context.Sequences.Single(s => s.ID == currentSequence.ID)
+                            //            };
 
-                                        // for each leg in the DP, add the leg to databse
-                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
-                                        foreach (Leg leg in DutyPeriodLegs.Where(n => n.ID == DP.ID))
+                            //            // add sequence to database
+                            //            context.SequenceOpDates.Add(DateItem);
+                            //            context.SaveChanges();
 
-                                        {
-                                            context.Legs.Add(leg);
-                                        }
+                            //        }
 
-                                        context.SaveChanges();
-                                        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
-                                    } 
-                                }
-                                finally
-                                {
-                                    context.Database.CloseConnection();
+                            //        foreach (DutyPeriod DP in sequenceDutyPeriods.Where(n => n.SequenceID == currentSequence.ID))
 
-                                    //initialize next sequence
-                                    currentSequence = new Sequence();
-                                }
+                            //        //foreach (DutyPeriod DP in sequenceDutyPeriods) - add to database
+                            //        {
+                            //            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods ON");
+                            //            context.DutyPeriods.Add(DP);
+                            //            context.SaveChanges();
+                            //            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.DutyPeriods OFF");
 
-                            }
+                            //            // for each leg in the DP, add the leg to databse
+                            //            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs ON");
+                            //            foreach (Leg leg in DutyPeriodLegs.Where(n => n.ID == DP.ID))
+
+                            //            {
+                            //                context.Legs.Add(leg);
+                            //            }
+
+                            //            context.SaveChanges();
+                            //            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Legs OFF");
+                            //        }
+                            //    }
+                            //    finally
+                            //    {
+                            //        context.Database.CloseConnection();
+
+                            //        //initialize next sequence
+                            //        currentSequence = new Sequence();
+                            //    }
+
+                            //}
 
 
 
@@ -203,13 +349,13 @@ namespace _3LTB.Controllers
                     }
                 }
             }
-          
+
             // Don't rely on or trust the FileName property without validation.
             return Redirect("/Home");
         }
 
-        
 
-        
-    } 
+
+
+    }
 }

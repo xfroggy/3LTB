@@ -22,22 +22,13 @@ namespace _3LTB.Data
         public virtual DbSet<DutyPeriod> DutyPeriods { get; set; }
         public virtual DbSet<Leg> Legs { get; set; }
         public virtual DbSet<OpDate> OpDates { get; set; }
+        public virtual DbSet<SequenceOpDate> SequenceOpDates { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-
       
-
-        //public virtual DbSet<Post> Posts { get; set; }
-
-        public _3LTBContext(DbContextOptions<_3LTBContext> options)
-            : base(options)
-        {
-        }
-
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<SequenceOpDate>()
-                .HasKey(c => new { c.SequenceID, c.OpDateID });
+                .HasKey(c => new { c.OpDateID, c.SequenceID});
             builder.Entity<Base>().HasData(new Base
             {
                 ID = 1,
@@ -233,39 +224,11 @@ namespace _3LTB.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
+        public _3LTBContext(DbContextOptions<_3LTBContext> options)
+    : base(options)
+        {
+        }
 
-        
-        //protected override void Seed(_3LTB.Areas.Identity.Data._3LTBContext context)
-        //{
-        //    System.Reflection.Assembly assembly = Assembly.GetExecutingAssembly();
-        //    string resourceName = "3LTB.SeedData.BulkData.txt";
-        //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-        //    {
-        //        using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-        //        {
-        //            CsvReader csvReader = new CsvReader(reader);
-        //            csvReader.Configuration.WillThrowOnMissingField = false;
-        //            var countries = csvReader.GetRecords<Base>().ToArray();
-        //            context.Countries.AddOrUpdate(c => c.Code, countries);
-        //        }
-        //    }
 
-        //    resourceName = "SeedingDataFromCSV.Domain.SeedData.provincestates.csv";
-        //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-        //    {
-        //        using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-        //        {
-        //            CsvReader csvReader = new CsvReader(reader);
-        //            csvReader.Configuration.WillThrowOnMissingField = false;
-        //            while (csvReader.Read())
-        //            {
-        //                var SeqNum = csvReader.GetRecord<Sequence>();
-        //                var BaseName = csvReader.GetField<string>("BaseName");
-        //                SeqNum.BaseID = context.Countries.Local.Single(c => c.Code == countryCode);
-        //                context.ProvinceStates.AddOrUpdate(p => p.Code, provinceState);
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

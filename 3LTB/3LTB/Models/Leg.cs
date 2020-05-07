@@ -15,7 +15,7 @@ namespace _3LTB.Models
         public int DayNumStart { get; set; }
         public int DayNumEnd { get; set; }
         public string EQP { get; set; }
-        public int FLTnum { get; set; }
+        public string FLTnum { get; set; }
         public string DEPcity { get; set; }
         public string DEPlcl { get; set; }
         public string DEPhbt { get; set; }

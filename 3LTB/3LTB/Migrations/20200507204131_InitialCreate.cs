@@ -238,12 +238,13 @@ namespace _3LTB.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SequenceID = table.Column<int>(nullable: false),
                     DPnum = table.Column<int>(nullable: false),
-                    RPTdayNum = table.Column<string>(nullable: true),
                     RPTdepLCL = table.Column<string>(nullable: true),
                     RPTdepHBT = table.Column<string>(nullable: true),
                     RLSarrLCL = table.Column<string>(nullable: true),
                     RLSarrHBT = table.Column<string>(nullable: true),
-                    DPblock = table.Column<float>(nullable: false)
+                    DPblock = table.Column<float>(nullable: false),
+                    DPrig = table.Column<float>(nullable: false),
+                    dpTOD = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,23 +258,23 @@ namespace _3LTB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SequenceOpDate",
+                name: "SequenceOpDates",
                 columns: table => new
                 {
-                    SequenceID = table.Column<int>(nullable: false),
-                    OpDateID = table.Column<int>(nullable: false)
+                    OpDateID = table.Column<int>(nullable: false),
+                    SequenceID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SequenceOpDate", x => new { x.SequenceID, x.OpDateID });
+                    table.PrimaryKey("PK_SequenceOpDates", x => new { x.OpDateID, x.SequenceID });
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_OpDates_OpDateID",
+                        name: "FK_SequenceOpDates_OpDates_OpDateID",
                         column: x => x.OpDateID,
                         principalTable: "OpDates",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SequenceOpDate_Sequences_SequenceID",
+                        name: "FK_SequenceOpDates_Sequences_SequenceID",
                         column: x => x.SequenceID,
                         principalTable: "Sequences",
                         principalColumn: "ID",
@@ -291,7 +292,7 @@ namespace _3LTB.Migrations
                     DayNumStart = table.Column<int>(nullable: false),
                     DayNumEnd = table.Column<int>(nullable: false),
                     EQP = table.Column<string>(nullable: true),
-                    FLTnum = table.Column<int>(nullable: false),
+                    FLTnum = table.Column<string>(nullable: true),
                     DEPcity = table.Column<string>(nullable: true),
                     DEPlcl = table.Column<string>(nullable: true),
                     DEPhbt = table.Column<string>(nullable: true),
@@ -421,9 +422,9 @@ namespace _3LTB.Migrations
                 column: "DutyPeriodID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SequenceOpDate_OpDateID",
-                table: "SequenceOpDate",
-                column: "OpDateID");
+                name: "IX_SequenceOpDates_SequenceID",
+                table: "SequenceOpDates",
+                column: "SequenceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sequences_BaseID",
@@ -455,7 +456,7 @@ namespace _3LTB.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "SequenceOpDate");
+                name: "SequenceOpDates");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

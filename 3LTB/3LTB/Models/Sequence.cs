@@ -26,7 +26,7 @@ namespace _3LTB.Models
         public int DaysOp { get; set; }
 
         public IList<DutyPeriod> DutyPeriods { get; set; }
-        public IList<SequenceOpDate> SequenceOpDates { get; set; }
+        public IList<SequenceOpDate> SequenceOpDates { get; set; } = new List<SequenceOpDate>();
         public Sequence()
         {
             ID = nextId;
